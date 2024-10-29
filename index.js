@@ -1,7 +1,10 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const fs = require("fs");
 
+const htmlContent = `<html><body><h1>Hello from Node.js</h1></body></html>`;
+fs.writeFileSync("/app/index.html", htmlContent);
 // Path where the HTML file will be created
 const htmlFilePath = path.join(__dirname, 'index.html');
 
