@@ -1,18 +1,13 @@
 {
-  "name": "knote",
+  "name": "simple-nodejs-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple Node.js app to serve HTML and API responses.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
+  "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1",
-    "marked": "^4.0.10",
-    "mongodb": "^3.5.2",
-    "multer": "^1.4.1",
-    "pug": "^3.0.1"
-  }
+  "license": "ISC"
 }
+
