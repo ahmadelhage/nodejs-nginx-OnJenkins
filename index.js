@@ -4,6 +4,9 @@ const path = require('path');
 
 const PORT = 3000;
 
+// Define the output path for index.html
+const outputPath = path.join(__dirname, 'index.html');
+
 // Define the HTML content
 const htmlContent = `
 <!DOCTYPE html>
@@ -20,39 +23,42 @@ const htmlContent = `
 </html>
 `;
 
-// Define the output path for index.html
-const outputPath = path.join(__dirname, 'index.html');
-
-// Write the HTML content to index.html
-fs.writeFile(outputPath, htmlContent, (err) => {
-    if (err) {
-        console.error('Error writing to index.html:', err);
-    } else {
-        console.log('index.html file has been generated successfully!');
-    }
-});
-
-// Create an HTTP server to serve the index.html file
-const server = http.createServer((req, res) => {
-    fs.readFile(outputPath, (err, data) => {
-        if (err) {
-            res.writeHead(500, { 'Content-Type': 'text/plain' });
-            res.end('Server error');
-            return;
-        }
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(data);
+// Function to create index.html
+function createHtmlFile() {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(outputPath, htmlContent, (err) => {
+            if (err) {
+                console.error('Error writing to index.html:', err);
+                reject(err);
+            } else {
+                console.log('index.html file has been generated successfully!');
+                resolve();
+            }
+        });
     });
-});
+}
 
-// Start the server
-server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+// Create the HTML file, then start the server
+createHtmlFile()
+    .then(() => {
+        // Create an HTTP server to serve the index.html file
+        const server = http.createServer((req, res) => {
+            fs.readFile(outputPath, (err, data) => {
+                if (err) {
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Server error');
+                    return;
+                }
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.end(data);
+            });
+        });
 
-
-
-
-
-
-
+        // Start the server
+        server.listen(PORT, () => {
+            console.log(`Server running at http://localhost:${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error('Failed to create index.html:', err);
+    });
